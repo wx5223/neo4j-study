@@ -24,6 +24,7 @@
         -->
     </bean>
 
+
     <!--<neo4j:config storeDirectory="target/neo4j-db-plain"
                   base-package="com.wx.domain"/>-->
     <neo4j:repositories base-package="com.wx.repositories"/>

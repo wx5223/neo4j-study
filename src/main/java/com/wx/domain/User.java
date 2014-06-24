@@ -14,10 +14,10 @@ import java.util.Set;
  * Created by Shawn on 2014/6/12.
  */
 @NodeEntity
-public class User {
-    @GraphId
+public class User extends IdEntity {
+    @Indexed(unique = true)
     private Long id;
-    @Indexed
+    @Indexed(indexType = IndexType.FULLTEXT, indexName = "userName")
     private String name;
     private String account;
     private String password;
@@ -30,7 +30,7 @@ public class User {
 
     public Order order(Neo4jOperations template,Resource resource) {
         Order order = template.createRelationshipBetween(this, resource, Order.class, "ORDER", false);
-        order.time = new Date();
+        order.setTime(new Date());
         return template.save(order);
     }
 
@@ -67,6 +67,13 @@ public class User {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public User(Long id, String name, String account, String password) {
+        this.id = id;
+        this.name = name;
+        this.account = account;
         this.password = password;
     }
 

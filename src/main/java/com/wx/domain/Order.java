@@ -1,9 +1,6 @@
 package com.wx.domain;
 
-import org.springframework.data.neo4j.annotation.EndNode;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.RelationshipEntity;
-import org.springframework.data.neo4j.annotation.StartNode;
+import org.springframework.data.neo4j.annotation.*;
 
 import java.util.Date;
 
@@ -13,11 +10,44 @@ import java.util.Date;
 @RelationshipEntity
 public class Order {
     @GraphId
-    Long id;
+    private Long graphId;
     @StartNode
-    User uesr;
+    @Fetch
+    private User uesr;
     @EndNode
-    Resource resource;
-    Date time;
+    @Fetch
+    private Resource resource;
+    private Date time;
 
+    public Long getGraphId() {
+        return graphId;
+    }
+
+    public void setGraphId(Long graphId) {
+        this.graphId = graphId;
+    }
+
+    public User getUesr() {
+        return uesr;
+    }
+
+    public void setUesr(User uesr) {
+        this.uesr = uesr;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
 }

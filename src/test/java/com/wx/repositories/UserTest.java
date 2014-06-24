@@ -11,7 +11,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -61,6 +64,41 @@ public class UserTest {
         Iterator<User> iterator = result.iterator();
         while (iterator.hasNext()) {
             User next =  iterator.next();
+            System.out.println(next);
+        }
+    }
+
+    @Test
+    public void findbyid() {
+        User user = userRepository.findById(101l);
+        System.out.println(user);
+    }
+    @Test
+    public void friends() {
+        List<User> users = userRepository.findUserFriends(101l);
+        System.out.println(users);
+    }
+    @Test
+    @Transactional
+    public void suggest() {
+        List<UserRepository.UserRecommend> users = userRepository.suggestFriends(101l);
+//        System.out.println(users);
+        for (UserRepository.UserRecommend user : users) {
+            System.out.println(user.getName());
+            System.out.println(user.getCount());
+        }
+    }
+    @Test
+    @Transactional
+    public void suggest1() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("0", 1265l);
+        Result<Map<String, Object>> result = template.query("start n=node({0}) match pf=n-[:FRIEND]-(f1)-[:FRIEND]-f2 " +
+                "where not(n-[:FRIEND]-f2) " +
+                "return f2.name as name,count(pf) as count", map);
+        Iterator<Map<String, Object>> iterator = result.iterator();
+        while (iterator.hasNext()) {
+            Map<String, Object> next = iterator.next();
             System.out.println(next);
         }
     }
